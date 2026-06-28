@@ -1,24 +1,27 @@
-# Absolute Decay (Абсолютное гниение)
+# Absolute Decay
 
-Мод для **Factorio 2.1+ (Space Age)**, который добавляет механику разложения для всех предметов в игре. Вместо обычного превращения в бесполезный мусор, предметы деградируют обратно по цепочке их производства.
+A mod for **Factorio 2.1+ (Space Age)** that adds a decay mechanic for all items in the game. Instead of simply turning into useless spoilage, items degrade back down their crafting chain.
 
-## Особенности
+## Features
 
-1. **Цепочка деградации (Гниение в ингредиенты)**:
-   Каждое изделие со временем распадается на свой самый дорогой твердый ингредиент (основываясь на себестоимости рецепта).
-   *Примеры:*
-   * Процессор (синий) $\rightarrow$ Улучшенная плата (красная)
-   * Улучшенная плата (красная) $\rightarrow$ Электронная плата (зеленая)
-   * Электронная плата (зеленая) $\rightarrow$ Железная плита
-   * Железная плита $\rightarrow$ Железная руда
+1. **Degradation Chain (Spoiling into Ingredients)**:
+   Every crafted item spoils over time into its most expensive solid ingredient (based on recipe cost).
+   *Examples:*
+   * Processing unit (blue) $\rightarrow$ Advanced circuit (red)
+   * Advanced circuit (red) $\rightarrow$ Electronic circuit (green)
+   * Electronic circuit (green) $\rightarrow$ Iron plate
+   * Iron plate $\rightarrow$ Iron ore
 
-2. **Разложение ресурсов**:
-   Базовые ресурсы, не имеющие рецептов крафта (например, руды, уголь, камень, дерево), разлагаются в стандартную порчу (`spoilage`).
+2. **Resource Decay**:
+   Basic resources with no crafting recipes (e.g., ores, coal, stone, wood) decay into standard `spoilage`.
 
-3. **Защита интерфейса**:
-   Чертежи, книги чертежей, планировщики демонтажа/модернизации и копирования защищены от гниения, чтобы не ломать игровой интерфейс.
+3. **GUI Protection**:
+   Blueprints, blueprint books, deconstruction/upgrade planners, and copy-paste tools are protected from decay to prevent breaking game interfaces.
 
-4. **Настройка времени**:
-   Вы можете настроить время жизни предметов в стартовых настройках мода. По умолчанию установлено **30 минут** (108 000 тиков).
+4. **Time Configuration**:
+   You can configure the lifetime of items before they spoil in the mod's startup settings. The default is **30 minutes** (108,000 ticks).
 
+## Configuration
 
+1. You can change the base spoilage time in the menu:
+   `Settings` $\rightarrow$ `Mod settings` $\rightarrow$ `Startup` $\rightarrow$ `Spoilage Time (in ticks)`.
