@@ -1,0 +1,10 @@
+---------------------------------------------------------------------------------------------------
+Version: 0.1.0
+  Date: 28. 06. 2026
+  Features:
+    - Initial release.
+    - Added absolute spoilage for all crafted items to turn into their most expensive solid ingredient.
+    - Added settings to customize spoilage time (default is 30 minutes).
+    - Blacklisted basic resources (ores, coal, stone, wood, asteroid chunks, etc.) from spoiling into ingredients; they spoil into standard spoilage instead.
+    - Excluded blueprints, planners, and copy-paste tools from spoilage to avoid GUI issues.
+    - Excluded recycling and unbarrelling recipes from ingredient cost calculations.
