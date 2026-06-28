@@ -1,5 +1,20 @@
 local spoil_ticks = settings.startup["absolute-decay-spoil-ticks"].value
 
+-- Fallback definition of "spoilage" item if playing vanilla 2.0/2.1 without Space Age expansion
+if not data.raw.item["spoilage"] then
+  data:extend({
+    {
+      type = "item",
+      name = "spoilage",
+      icon = "__base__/graphics/icons/coal.png", -- fallback icon from base game
+      icon_size = 64,
+      subgroup = "raw-resource",
+      order = "g[spoilage]",
+      stack_size = 100
+    }
+  })
+end
+
 local item_types = {
   "item", "ammo", "armor", "gun", "capsule", "module", "tool",
   "spidertron-remote", "rail-planner", "repair-tool", "selection-tool",
