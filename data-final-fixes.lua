@@ -6,6 +6,24 @@ local item_types = {
   "item-with-entity-data", "item-with-tags", "item-with-label", "item-with-inventory"
 }
 
+-- Base resources that should always spoil into standard spoilage instead of processing ingredients
+local base_resources = {
+  ["iron-ore"] = true,
+  ["copper-ore"] = true,
+  ["coal"] = true,
+  ["stone"] = true,
+  ["wood"] = true,
+  ["uranium-ore"] = true,
+  ["calcite"] = true,
+  ["tungsten-ore"] = true,
+  ["holmium-ore"] = true,
+  ["scrap"] = true,
+  ["metallic-asteroid-chunk"] = true,
+  ["carbonic-asteroid-chunk"] = true,
+  ["oxidizer-asteroid-chunk"] = true,
+  ["promethium-asteroid-chunk"] = true,
+}
+
 -- Check if an item is a valid item prototype
 local function is_valid_item(name)
   for _, itype in ipairs(item_types) do
@@ -150,7 +168,10 @@ for _, item_type in ipairs(item_types) do
         
         -- Apply spoilage if the item does not already have a spoil_result
         if not item.spoil_result then
-          local result = get_most_expensive_ingredient(name) or "spoilage"
+          local result = "spoilage"
+          if not base_resources[name] then
+            result = get_most_expensive_ingredient(name) or "spoilage"
+          end
           item.spoil_result = result
           item.spoil_ticks = spoil_ticks
         end
