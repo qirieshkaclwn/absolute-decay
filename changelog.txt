@@ -1,10 +1,18 @@
 ---------------------------------------------------------------------------------------------------
+Version: 0.1.1
+  Date: 28. 06. 2026
+  Bugfixes:
+    - Fixed base resources (ores, coal, stone, wood, asteroid chunks, scrap) spoiling into processing ingredients (like carbon or asteroid chunks) instead of standard spoilage.
+    - Excluded recycling and unbarrelling recipes from ingredient cost calculations.
+  Features:
+    - Added custom mod icon.
+    - Separated documentation into English (README.md) and Russian (README.ru.md) versions.
+
+---------------------------------------------------------------------------------------------------
 Version: 0.1.0
   Date: 28. 06. 2026
   Features:
     - Initial release.
     - Added absolute spoilage for all crafted items to turn into their most expensive solid ingredient.
     - Added settings to customize spoilage time (default is 30 minutes).
-    - Blacklisted basic resources (ores, coal, stone, wood, asteroid chunks, etc.) from spoiling into ingredients; they spoil into standard spoilage instead.
     - Excluded blueprints, planners, and copy-paste tools from spoilage to avoid GUI issues.
-    - Excluded recycling and unbarrelling recipes from ingredient cost calculations.
