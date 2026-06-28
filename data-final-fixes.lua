@@ -19,15 +19,24 @@ end
 -- Helper to find recipe for an item (either name matches recipe, or item is in recipe results)
 local function find_recipe_for_item(item_name)
   local recipe = data.raw.recipe[item_name]
-  if recipe then return recipe end
+  if recipe 
+     and recipe.category ~= "recycling" 
+     and not recipe.name:find("recycling") 
+     and not recipe.name:find("empty%-") then
+    return recipe
+  end
 
   for _, r in pairs(data.raw.recipe) do
-    if r.result == item_name then
-      return r
-    elseif r.results then
-      for _, res in ipairs(r.results) do
-        if res.name == item_name or (type(res) == "table" and res[1] == item_name) then
-          return r
+    if r.category ~= "recycling" 
+       and not r.name:find("recycling") 
+       and not r.name:find("empty%-") then
+      if r.result == item_name then
+        return r
+      elseif r.results then
+        for _, res in ipairs(r.results) do
+          if res.name == item_name or (type(res) == "table" and res[1] == item_name) then
+            return r
+          end
         end
       end
     end
