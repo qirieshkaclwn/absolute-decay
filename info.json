@@ -1,0 +1,9 @@
+{
+  "name": "absolute-decay",
+  "version": "0.1.0",
+  "title": "Absolute Decay",
+  "author": "qirieshka",
+  "factorio_version": "2.1",
+  "dependencies": ["? base >= 2.0.0"],
+  "description": "Every item in the game now spoils and decays over time!"
+}

@@ -1,0 +1,84 @@
+name: Package and Release Mod
+
+on:
+  push:
+    branches:
+      - master
+      - main
+    tags:
+      - 'v*'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    name: Package Mod
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Read metadata from info.json
+        id: metadata
+        run: |
+          MOD_NAME=$(jq -r '.name' info.json)
+          MOD_VERSION=$(jq -r '.version' info.json)
+          FOLDER_NAME="${MOD_NAME}_${MOD_VERSION}"
+          echo "MOD_NAME=$MOD_NAME" >> $GITHUB_ENV
+          echo "MOD_VERSION=$MOD_VERSION" >> $GITHUB_ENV
+          echo "FOLDER_NAME=$FOLDER_NAME" >> $GITHUB_ENV
+
+      - name: Create package structure
+        run: |
+          mkdir -p "${{ env.FOLDER_NAME }}"
+          # Copy all files to the subdirectory, excluding git, github and build artifacts
+          rsync -Rr ./ "${{ env.FOLDER_NAME }}/" \
+            --exclude="${{ env.FOLDER_NAME }}" \
+            --exclude=".git" \
+            --exclude=".github" \
+            --exclude=".gitignore" \
+            --exclude="*.zip" \
+            --exclude="LICENSE" \
+            --exclude="README.md"
+          
+          # Zip the folder
+          zip -r "${{ env.FOLDER_NAME }}.zip" "${{ env.FOLDER_NAME }}"
+
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ env.FOLDER_NAME }}
+          path: ${{ env.FOLDER_NAME }}.zip
+
+      - name: Create GitHub Release
+        if: startsWith(github.ref, 'refs/tags/v')
+        uses: softprops/action-gh-release@v2
+        with:
+          files: ${{ env.FOLDER_NAME }}.zip
+          draft: false
+          prerelease: false
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Publish to Factorio Mod Portal
+        if: startsWith(github.ref, 'refs/tags/v')
+        run: |
+          echo "Initializing upload for mod ${{ env.MOD_NAME }}..."
+          UPLOAD_RESPONSE=$(curl -s -X POST https://mods.factorio.com/api/v2/mods/releases/init_upload \
+            -H "Authorization: Bearer ${{ secrets.FACTORIO_API_KEY }}" \
+            -F "mod=${{ env.MOD_NAME }}")
+          
+          UPLOAD_URL=$(echo "$UPLOAD_RESPONSE" | jq -r '.upload_url')
+          
+          if [ "$UPLOAD_URL" = "null" ] || [ -z "$UPLOAD_URL" ]; then
+            echo "Failed to initialize upload. Response:"
+            echo "$UPLOAD_RESPONSE"
+            exit 1
+          fi
+          
+          echo "Uploading ${{ env.FOLDER_NAME }}.zip..."
+          UPLOAD_RESULT=$(curl -s -X POST "$UPLOAD_URL" -F "file=@${{ env.FOLDER_NAME }}.zip")
+          echo "Upload complete. Response:"
+          echo "$UPLOAD_RESULT"
